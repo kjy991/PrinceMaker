@@ -45,6 +45,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    val mockkVersion = "1.13.8"
+    testImplementation("io.mockk:mockk:${mockkVersion}")
 }
 
 kapt {
