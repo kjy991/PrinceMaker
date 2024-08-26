@@ -6,6 +6,7 @@ import com.makers.princemaker.entity.Prince;
 import com.makers.princemaker.exception.PrinceMakerException;
 import com.makers.princemaker.repository.PrinceRepository;
 import com.makers.princemaker.code.PrinceMakerErrorCode;
+import com.makers.princemaker.repository.WoundedPrinceRepository;
 import com.makers.princemaker.type.PrinceLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +36,9 @@ import static org.mockito.Mockito.verify;
 class PrinceMakerServiceTest {
     @Mock
     private PrinceRepository princeRepository;
+
+    @Mock
+    private WoundedPrinceRepository woundedPrinceRepository;
 
     @InjectMocks
     private PrinceMakerService princeMakerService;
