@@ -1,89 +1,49 @@
-package com.makers.princemaker.entity;
+package com.makers.princemaker.entity
 
-import com.makers.princemaker.code.StatusCode;
-import com.makers.princemaker.type.PrinceLevel;
-import com.makers.princemaker.type.SkillType;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import com.makers.princemaker.code.StatusCode
+import com.makers.princemaker.type.PrinceLevel
+import com.makers.princemaker.type.SkillType
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.time.LocalDateTime
+import javax.persistence.*
 
 /**
  * @author Snow
  */
-//@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(
+    AuditingEntityListener::class
+)
 @Table(name = "prince")
-public class Prince {
+class Prince(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    val id: Long? = null,
 
     @Enumerated(EnumType.STRING)
-    private PrinceLevel princeLevel;
+    var princeLevel: PrinceLevel,
 
     @Enumerated(EnumType.STRING)
-    private SkillType skillType;
+    var skillType: SkillType,
 
     @Enumerated(EnumType.STRING)
-    private StatusCode status;
+    var status: StatusCode,
 
-    private Integer experienceYears;
-    private String princeId;
-    private String name;
-    private Integer age;
+    var experienceYears: Int,
+
+    val princeId: String,
+
+    var name: String,
+
+    var age: Int,
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    val createdAt: LocalDateTime? = null,
 
     @LastModifiedDate
-    private LocalDateTime updatedAt;
+    val updatedAt: LocalDateTime? = null,
+) {
 
-    public Long getId() {
-        return id;
-    }
-
-    public PrinceLevel getPrinceLevel() {
-        return princeLevel;
-    }
-
-    public SkillType getSkillType() {
-        return skillType;
-    }
-
-    public StatusCode getStatus() {
-        return status;
-    }
-
-    public Integer getExperienceYears() {
-        return experienceYears;
-    }
-
-    public String getPrinceId() {
-        return princeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
 }
