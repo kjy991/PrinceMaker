@@ -6,6 +6,7 @@ import com.makers.princemaker.entity.Prince;
 import com.makers.princemaker.exception.PrinceMakerException;
 import com.makers.princemaker.repository.PrinceRepository;
 import com.makers.princemaker.code.PrinceMakerErrorCode;
+import com.makers.princemaker.type.PrinceLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -59,14 +60,14 @@ class PrinceMakerServiceTest {
     @Test
     void createPrinceTest_success() {
         //given
-        CreatePrince.Request request = CreatePrince.Request.builder()
-                .princeLevel(MIDDLE_PRINCE)
-                .skillType(INTELLECTUAL)
-                .experienceYears(7)
-                .princeId("princeId")
-                .name("name")
-                .age(28)
-                .build();
+        CreatePrince.Request request = new CreatePrince.Request(
+                PrinceLevel.MIDDLE_PRINCE,
+                INTELLECTUAL,
+                7,
+                "princeId",
+                "name",
+                28
+        );
         ArgumentCaptor<Prince> captor =
                 ArgumentCaptor.forClass(Prince.class);
 
@@ -91,14 +92,14 @@ class PrinceMakerServiceTest {
         //given
         Prince juniorPrince =
                 createPrince(JUNIOR_PRINCE, INTELLECTUAL, MAX_JUNIOR_EXPERIENCE_YEARS, "princeId");
-        CreatePrince.Request request = CreatePrince.Request.builder()
-                .princeLevel(JUNIOR_PRINCE)
-                .skillType(INTELLECTUAL)
-                .experienceYears(3)
-                .princeId("princeId")
-                .name("name")
-                .age(28)
-                .build();
+        CreatePrince.Request request = new CreatePrince.Request(
+                JUNIOR_PRINCE,
+                INTELLECTUAL,
+                3,
+                "princeId",
+                "name",
+                28
+        );
         given(princeRepository.findByPrinceId(anyString()))
                 .willReturn(Optional.of(juniorPrince));
 
@@ -112,14 +113,14 @@ class PrinceMakerServiceTest {
     @Test
     void createPrinceTest_failed_with_invalid_experience() {
         //given
-        CreatePrince.Request request = CreatePrince.Request.builder()
-                .princeLevel(KING)
-                .skillType(INTELLECTUAL)
-                .experienceYears(MIN_KING_EXPERIENCE_YEARS - 3)
-                .princeId("princeId")
-                .name("name")
-                .age(28)
-                .build();
+        CreatePrince.Request request = new CreatePrince.Request(
+                KING,
+                INTELLECTUAL,
+                MIN_KING_EXPERIENCE_YEARS - 3,
+                "princeId",
+                "name",
+                28
+        );
         given(princeRepository.findByPrinceId(anyString()))
                 .willReturn(Optional.empty());
 

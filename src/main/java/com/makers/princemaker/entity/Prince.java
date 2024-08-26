@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 /**
  * @author Snow
  */
-@Getter
+//@Getter
 @Setter
 @Builder
 @NoArgsConstructor
@@ -46,4 +46,44 @@ public class Prince {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public PrinceLevel getPrinceLevel() {
+        return princeLevel;
+    }
+
+    public SkillType getSkillType() {
+        return skillType;
+    }
+
+    public StatusCode getStatus() {
+        return status;
+    }
+
+    public Integer getExperienceYears() {
+        return experienceYears;
+    }
+
+    public String getPrinceId() {
+        return princeId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

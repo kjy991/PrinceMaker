@@ -1,70 +1,56 @@
-package com.makers.princemaker.dto;
+package com.makers.princemaker.dto
 
-import com.makers.princemaker.entity.Prince;
-import com.makers.princemaker.type.PrinceLevel;
-import com.makers.princemaker.type.SkillType;
-import lombok.*;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import com.makers.princemaker.entity.Prince
+import com.makers.princemaker.type.PrinceLevel
+import com.makers.princemaker.type.SkillType
+import lombok.*
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 /**
  * @author Snow
  */
-public class CreatePrince {
+class CreatePrince {
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class Request {
-        @NotNull
-        private PrinceLevel princeLevel;
+    data class Request(
+//        @NotNull
+        val princeLevel: PrinceLevel? = null,
+//        @NotNull
+        val skillType: SkillType? = null,
+//        @NotNull
+//        @Min(0)
+        val experienceYears: Int? = null,
+//        @NotNull
+//        @Size(min = 3, max = 50, message = "invalid princeId")
+        val princeId: String? = null,
+//        @Size(min = 2, max = 50, message = "invalid name")
+        val name: String? = null,
+//        @NotNull
+//        @Min(18)
+        val age: Int? = null
+    )
 
-        @NotNull
-        private SkillType skillType;
-
-        @NotNull
-        @Min(0)
-        private Integer experienceYears;
-
-        @NotNull
-        @Size(min = 3, max = 50, message = "invalid princeId")
-        private String princeId;
-
-        @NotNull
-        @Size(min = 2, max = 50, message = "invalid name")
-        private String name;
-
-        @NotNull
-        @Min(18)
-        private Integer age;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class Response {
-        private PrinceLevel princeLevel;
-        private SkillType skillType;
-        private Integer experienceYears;
-        private String princeId;
-        private String name;
-        private Integer age;
-
-        public static Response fromEntity(Prince prince) {
-            return Response.builder()
-                    .princeLevel(prince.getPrinceLevel())
-                    .skillType(prince.getSkillType())
-                    .experienceYears(prince.getExperienceYears())
-                    .princeId(prince.getPrinceId())
-                    .name(prince.getName())
-                    .age(prince.getAge())
-                    .build();
+    data class Response(
+        val princeLevel: PrinceLevel? = null,
+        val skillType: SkillType? = null,
+        val experienceYears: Int? = null,
+        val princeId: String? = null,
+        val name: String? = null,
+        val age: Int? = null
+    ) {
+        companion object {
+            @JvmStatic
+            fun fromEntity(prince: Prince): Response {
+                return Response(
+                    princeLevel = prince.princeLevel,
+                    skillType = prince.skillType,
+                    experienceYears = prince.experienceYears,
+                    princeId = prince.princeId,
+                    name = prince.name,
+                    age = prince.age
+                )
+            }
         }
     }
 }
