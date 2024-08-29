@@ -1,27 +1,19 @@
 package com.makers.princemaker.service
 
 import com.makers.princemaker.code.PrinceMakerErrorCode
-import com.makers.princemaker.constant.PrinceMakerConstant
 import com.makers.princemaker.controller.CreatePrince
-import com.makers.princemaker.entity.PrinceMock
 import com.makers.princemaker.entity.dummyPrince
 import com.makers.princemaker.exception.PrinceMakerException
 import com.makers.princemaker.repository.PrinceRepository
 import com.makers.princemaker.repository.WoundedPrinceRepository
-import com.makers.princemaker.type.PrinceLevel
 import com.makers.princemaker.type.PrinceLevel.*
-import com.makers.princemaker.type.SkillType
 import com.makers.princemaker.type.SkillType.*
 import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.MockK
-import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
-import java.util.*
 
 class PrinceMakerServiceKotest : BehaviorSpec({
     val princeRepository: PrinceRepository = mockk()
@@ -48,7 +40,7 @@ class PrinceMakerServiceKotest : BehaviorSpec({
         When("princeId가 중복되지 않고 정상 요청이 오면") {
             every {
                 (princeRepository.findByPrinceId(any()))
-            } returns Optional.empty()
+            } returns null
 
             val result =
                 dummyPrince(princeLevel = MIDDLE_PRINCE, skillType = INTELLECTUAL, experienceYears = 7)
@@ -64,7 +56,7 @@ class PrinceMakerServiceKotest : BehaviorSpec({
         When("princeId가 중복되고 정상 요청이 오면") {
             every {
                 (princeRepository.findByPrinceId(any()))
-            } returns Optional.of(juniorPrince)
+            } returns juniorPrince
 
             val ex = shouldThrow<PrinceMakerException> {
                 princeMakerService.createPrince(request)
