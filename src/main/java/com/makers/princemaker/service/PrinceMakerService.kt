@@ -30,7 +30,7 @@ class PrinceMakerService(
     fun createPrince(request: CreatePrince.Request): CreatePrince.Response {
         validateCreatePrinceRequest(request)
 
-        val prince = Prince(
+        return Prince(
             null,
             request.princeLevel!!,
             request.skillType!!,
@@ -41,10 +41,9 @@ class PrinceMakerService(
             request.age!!,
             null,
             null
-        )
-
-        princeRepository.save(prince)
-        return prince.toCreatePrinceResponse()
+        ).also {
+            princeRepository.save(it)
+        }.toCreatePrinceResponse()
     }
 
     private fun validateCreatePrinceRequest(request: CreatePrince.Request) {
@@ -91,11 +90,14 @@ class PrinceMakerService(
     ): PrinceDetailDto {
         val prince = princeRepository.findByPrinceId(princeId!!)
             ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
-        prince.princeLevel = request.princeLevel
-        prince.skillType = request.skillType
-        prince.experienceYears = request.experienceYears
-        prince.name = request.name
-        prince.age = request.age
+
+        prince.apply {
+            this.princeLevel = request.princeLevel
+            this.skillType = request.skillType
+            this.experienceYears = request.experienceYears
+            this.name = request.name
+            this.age = request.age
+        }
 
         return PrinceDetailDto.fromEntity(prince)
     }
@@ -103,19 +105,20 @@ class PrinceMakerService(
     @Transactional
     fun woundPrince(
         princeId: String?
-    ): PrinceDetailDto {
-        val prince =
-            princeRepository.findByPrinceId(princeId!!)
-                ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
+    ): PrinceDetailDto = with(
+        princeRepository.findByPrinceId(princeId!!)
+            ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
+    ) {
 
-        prince.status = StatusCode.WOUNDED
-
-        val woundedPrince = WoundedPrince(
+        this.status = StatusCode.WOUNDED
+        WoundedPrince(
             null,
-            prince.princeId,
-            prince.name,
-        )
-        woundedPrinceRepository.save(woundedPrince)
-        return PrinceDetailDto.fromEntity(prince)
+            this.princeId,
+            this.name,
+        ).also {
+            woundedPrinceRepository.save(it)
+        }
+        PrinceDetailDto.fromEntity(this)
     }
+
 }
