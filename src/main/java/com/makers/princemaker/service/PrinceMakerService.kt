@@ -52,27 +52,25 @@ class PrinceMakerService(
         (princeRepository.findByPrinceId(request.princeId!!) != null)
             .shouldNotTrue(PrinceMakerErrorCode.DUPLICATED_PRINCE_ID)
 
-
         (request.princeLevel == PrinceLevel.KING
                 && request.experienceYears!! < PrinceMakerConstant.MIN_KING_EXPERIENCE_YEARS
                 ).shouldNotTrue(PrinceMakerErrorCode.LEVEL_AND_EXPERIENCE_YEARS_NOT_MATCH)
-
 
         (request.princeLevel == PrinceLevel.MIDDLE_PRINCE
                 && (request.experienceYears!! > PrinceMakerConstant.MIN_KING_EXPERIENCE_YEARS
                 || request.experienceYears < PrinceMakerConstant.MAX_JUNIOR_EXPERIENCE_YEARS))
             .shouldNotTrue(PrinceMakerErrorCode.LEVEL_AND_EXPERIENCE_YEARS_NOT_MATCH)
 
-
         (request.princeLevel == PrinceLevel.JUNIOR_PRINCE
                 && request.experienceYears!! > PrinceMakerConstant.MAX_JUNIOR_EXPERIENCE_YEARS
                 ).shouldNotTrue(PrinceMakerErrorCode.LEVEL_AND_EXPERIENCE_YEARS_NOT_MATCH)
     }
 
-    @get:Transactional
-    val allPrince: List<PrinceDto>
-        get() = princeRepository.findByStatusEquals(StatusCode.HEALTHY)
+    @Transactional
+    fun allPrince(): List<PrinceDto> {
+        return princeRepository.findByStatusEquals(StatusCode.HEALTHY)
             .map { PrinceDto.fromEntity(it) }
+    }
 
 
     @Transactional
@@ -89,15 +87,13 @@ class PrinceMakerService(
         val prince = princeRepository.findByPrinceId(princeId!!)
             ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
 
-        prince.apply {
+        return prince.apply {
             this.princeLevel = request.princeLevel
             this.skillType = request.skillType
             this.experienceYears = request.experienceYears
             this.name = request.name
             this.age = request.age
-        }
-
-        return prince.toPrinceDetailDto()
+        }.toPrinceDetailDto()
     }
 
     @Transactional
@@ -107,7 +103,6 @@ class PrinceMakerService(
         princeRepository.findByPrinceId(princeId!!)
             ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
     ) {
-
         this.status = StatusCode.WOUNDED
         WoundedPrince(
             null,

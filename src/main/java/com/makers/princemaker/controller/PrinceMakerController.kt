@@ -24,9 +24,10 @@ class PrinceMakerController(
 //        return princeMakerService.createPrince(request)
 //    }
 
-    @get:GetMapping("/princes")
-    val princes: List<PrinceDto>
-        get() = princeMakerService.allPrince
+    @GetMapping("/princes")
+    fun princes(): List<PrinceDto> {
+        return princeMakerService.allPrince()
+    }
 
     @GetMapping("/prince/{princeId}")
     fun getPrince(
